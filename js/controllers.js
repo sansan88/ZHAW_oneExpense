@@ -2,34 +2,19 @@ angular.module('starter.controllers', [])
 
 // SCOPE defines DATA which should be available on the view.
 
-.controller('SpesenCtrl', function($scope, $indexedDB) {
+.controller('SpesenCtrl', function($scope) {
 
-  if (typeof(mose) !== 'object'){
-    OSNE = 'expense';
-    mose =  $indexedDB.objectStore(OSNE);
-  }
-
-  // GET Values from IndexedDB
-  $scope.expenses = [];
-  mose.getAll().then(function(results) {
-    $scope.expenses = results;
-  });
 
 })
-.controller('SpesenDetailCtrl', function($scope, $stateParams, $indexedDB) {
-  // Init DB Connection
-  if (typeof(mose) !== 'object'){
-    OSNE = 'expense';
-    mose =  $indexedDB.objectStore(OSNE);
-  }
-  $scope.spesen = {};
-  //$scope.spesen = mose.$get($indexedDB);
+.controller('SpesenDetailCtrl', function($scope, $stateParams) {
+
+
 })
 
 /*****************************************************************/
 // DASHBOARD CONTROLLER
 /*****************************************************************/
-.controller('DashCtrl', function($scope, Account, $indexedDB) {
+.controller('DashCtrl', function($scope, Account) {
   // INIT Model VARIABLES
   var now = new Date();
   var string = "";
@@ -43,38 +28,6 @@ angular.module('starter.controllers', [])
 
 //GET Account DATA
   $scope.account = Account.getAccount();
-
-
-  //Insert Function Expeneses
-  $scope.insertExpense = function(){
-
-    // Init DB Connection
-
-    if (typeof(mose) !== 'object'){
-      OSNE = 'expense';
-      mose =  $indexedDB.objectStore(OSNE);
-    }
-
-    var id = $scope.formBeschreibung + '_' + $scope.formBeschreibung + '_' + $scope.formBelegdatum;
-    var currentdate = new Date();
-    var key = "";
-    key = key.concat(currentdate.getFullYear(), currentdate.getMonth()+1, currentdate.getDate(),
-    currentdate.getHours(), currentdate.getMinutes(),currentdate.getSeconds(), currentdate.getMilliseconds() );
-
-    mose.insert({
-      key: key,
-      id: id,
-      beschreibung: $scope.formBeschreibung,
-      kategorie: $scope.formKategorie,
-      beginndatum: $scope.formBeginndatum,
-      enddatum: $scope.formEnddatum,
-      belegdatum: $scope.formSpesenbetrag,
-      belegwaehrung: $scope.formWaehrung,
-      betrag: $scope.formSpesenbetrag,
-      picture: $scope.formPicture
-    });
-  }
-
 
   // CAMERA
   var takePicture = document.querySelector("#take-picture");
@@ -105,7 +58,7 @@ angular.module('starter.controllers', [])
 // ACCOUNT CONTROLLER
 /*****************************************************************/
 
-.controller('AccountCtrl', function($scope, Account, $indexedDB) {
+.controller('AccountCtrl', function($scope, Account) {
 //GET Account DATA
   $scope.account = Account.getAccount();
 
