@@ -1,0 +1,39 @@
+<ion-view title="Account">
+  <ion-content class="padding">
+    <h1>Mein Profil</h1>
+
+    <form ng-controller="AccountCtrl">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Vorname</span>
+          <input type="text" id="accountVorname" ng-model="account.formAccountVorname" ng-model-instant>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Name</span>
+          <input type="text" id="accountNachname" ng-model="account.formAccountNachname" ng-model-instant>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Email</span>
+          <input type="email" id="accountEmail" ng-model="account.formAccountEmail" ng-model-instant>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Passwort</span>
+          <input type="password" id="accountPasswort" ng-model="account.formAccountPasswort" ng-model-instant>
+        </label>
+      </div>
+
+      <button data-ng-click="accountSave()" class="button button-balanced">
+        speichern
+      </button>
+
+      <button data-ng-click="accountCancel()" class="button button-assertive">
+        abbrechen
+      </button>
+
+    </form>
+
+
+
+
+  </ion-content>
+</ion-view>
