@@ -8,62 +8,51 @@ angular.module('starter.controllers', [])
 /*****************************************************************/
 .controller('SpesenCtrl', function($scope, $ionicModal) {
   // IDB
+  const dbName = "indexedDB";
+  var request = indexedDB.open(dbName, 1);
 
-  $scope.items = '';
-
-  var initCallback = function(){
-    //getItems();
-    dataStore.getAll(function(data){
-      $scope.expenses = data;
-      // http://jimhoskins.com/2012/12/17/angularjs-and-apply.html
-      $scope.$apply();
-    },errorCallback);
-    console.log('init Callback & get Data');
-  };
-
-  var dataStore = new IDBStore(
-  {
-    storeName: 'Store',
-    storePrefix: 'IDBWrapper-',
-    dbVersion: 1,
-    keyPath: 'id',
-    autoIncrement: true,
-    indexes: [],
-    onStoreReady: function(){
-      console.log('DB Ready');
-    },
-    onError: function(error){
-      //throw error;
-      Console.log('error on idb create');
-      }
-  }, initCallback);
-
-  var getItemsSuccess = function(data){
-    $scope.expenses = data;
-    // http://jimhoskins.com/2012/12/17/angularjs-and-apply.html
-    $scope.$apply();
-  };
-
-  var errorCallback = function(){
-    console.log('error');
-  };
-
-  var getItems = function(){
-    dataStore.getAll(getItemsSuccess,errorCallback);
-    console.log('getItems');
-  };
-
-  $scope.deleteItem = function(item){
-    dataStore.remove(item,getItems,errorCallback);
+  request.onsuccess = function(event){
   }
 
-  $scope.addItem = function(){
-    dataStore.put({'beschreibung': $scope.formBeschreibung, 'belegdatum' : $scope.formBelegdatum},getItems,errorCallback);
+  request.onerror = function(event) {
+  }
 
-    // Init Elements
-    $scope.formBeschreibung = '';
-    $scope.formBelegdatum   = '';
-  };
+  request.onupgradeneeded = function (event) {
+    var db = event.target.result;
+    // Create another object store called "names" with the autoIncrement flag set as true.
+    var objStore = db.createObjectStore("spesen", { autoIncrement : true });
+
+    //add initialer Eintrag:
+    objStore.add(
+      {
+        "formBeschreibung": "Das ist eine Beschreibung",
+        "formBeginndatum":  "value",
+        "formBeginnzeit":   "value",
+        "formEnddatum":     "value",
+        "formEndzeit":      "value",
+        "formBelegdatum":   "value",
+        "formSpesenbetrag": "value",
+        "formPicture":      "value"
+      }
+    );//add
+  }
+
+  $scope.insertExpense = function(){
+
+    var data = {
+        "formBeschreibung": $scope.formBeschreibung,
+        "formBeginndatum":  $scope.formBeginndatum,
+        "formBeginnzeit":   $scope.formBeginnzeit,
+        "formEnddatum":     $scope.formEnddatum,
+        "formEndzeit":      $scope.formEndzeit,
+        "formBelegdatum":   $scope.formBelegdatum,
+        "formSpesenbetrag": $scope.formSpesenbetrag,
+        "formPicture":      $scope.formPciture
+      }
+  }
+
+
+
 
 
   // MODAL FENSTER
