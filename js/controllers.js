@@ -32,7 +32,10 @@ angular.module('starter.controllers', [])
     onStoreReady: function(){
       console.log('DB Ready');
     },
-    onError: function(error){ throw error; }
+    onError: function(error){
+      //throw error;
+      Console.log('error on idb create');
+      }
   }, initCallback);
 
   var getItemsSuccess = function(data){
