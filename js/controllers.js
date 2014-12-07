@@ -12,7 +12,11 @@ angular.module('starter.controllers', [])
   // INDEXED DB Start
   // *************************************************************************
   // IDB
-  var hasIDB = typeof window.indexedDB != 'undefined';
+   if( typeof window.indexedDB != 'undefined' ){
+     alert("IDB erstellt");
+   }else{
+     alert("keine IDB erstellt | not supported");
+   }
   //Create DB
   idb = indexedDB.open('IDBSpesen', 1);
   var dbobject; // Define a global variable to hold our database object
