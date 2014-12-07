@@ -11,50 +11,50 @@ angular.module('starter.controllers', [])
   // *************************************************************************
   // INDEXED DB Start
   // *************************************************************************
-  // IDB
-   if( typeof window.indexedDB != 'undefined' ){
-     alert("IDB erstellt");
-   }else{
-     alert("keine IDB erstellt | not supported");
-   }
-  //Create DB
-  idb = indexedDB.open('IDBSpesen', 1);
-  var dbobject; // Define a global variable to hold our database object
-  idb.onsuccess = function(evt){
-    dbobject = evt.target.result;
-    alert('idb.onsuccess');
-    dbobject.createObjectStore('spesen',{autoIncrement: true});
-  }
-  idb.onupgradeneeded = function (evt) {
-    dbobject = evt.target.result;
-    // Check our version number
-    if (evt.oldVersion < 1) {
-      dbobject.createObjectStore('spesen',{autoIncrement: true});
-      alert('idb.onupgradeneeded');
-    }
-  }
-  idb.onblocked = function(){
-    alert('idb.onblocked');
-  }
-  idb.onerror = function(){
-    alert('idb.onerror');
-  }
+  var idbSupported = false;
+  var db;
 
-  try{
-    transaction = dbobject.transaction('spesen', 'readwrite');
-  }
-  catch(err){
-    alert('error create transaktion');
-  }
+  //document.addEventListener("DOMContentLoaded", function(){
+
+    if("indexedDB" in window) {
+      idbSupported = true;
+    }
+    if(idbSupported) {
+      var openRequest = indexedDB.open("idb",3); //open idb
+      openRequest.onupgradeneeded = function(e) {
+        console.log("running onupgradeneeded");
+        var thisDB = e.target.result;
+        if(!thisDB.objectStoreNames.contains("objectStore")) {
+          thisDB.createObjectStore("objectStore", {autoIncrement:true});
+        }
+      }
+      openRequest.onsuccess = function(e) {
+        console.log("Success!");
+        db = e.target.result;
+      }
+      openRequest.onerror = function(e) {
+        console.log("Error");
+        console.dir(e);
+      }
+    }
   // *************************************************************************
   // INDEXED ENDE
   // *************************************************************************
 
 
   $scope.insertExpense = function(){
-    transaction = dbobject.transaction('spesen', 'readwrite');
+    var transaction = db.transaction("objectStore","readwrite");
+    var store = transaction.objectStore("objectStore");
 
-    request = objectstore.add({
+    //Perform the add
+    var person = {
+      name:name,
+      email:email,
+      created:new Date()
+    }
+    var request = store.add(person,1);
+
+    var a = {
       "formBeschreibung": $scope.formBeschreibung,
       "formBeginndatum":  $scope.formBeginndatum,
       "formBeginnzeit":   $scope.formBeginnzeit,
@@ -64,10 +64,8 @@ angular.module('starter.controllers', [])
       "formSpesenbetrag": $scope.formSpesenbetrag,
       "formPicture":      $scope.formPciture
 
-    });
-    request.success = function(){
-      alert('eintrag added');
-    }
+    };
+
   }
 
 
