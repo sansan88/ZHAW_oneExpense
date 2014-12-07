@@ -7,50 +7,64 @@ angular.module('starter.controllers', [])
 // SPESEN CONTROLLER
 /*****************************************************************/
 .controller('SpesenCtrl', function($scope, $ionicModal) {
+
+  // *************************************************************************
+  // INDEXED DB Start
+  // *************************************************************************
   // IDB
-  const dbName = "indexedDB";
-  var request = indexedDB.open(dbName, 1);
-
-  request.onsuccess = function(event){
+  var hasIDB = typeof window.indexedDB != 'undefined';
+  //Create DB
+  idb = indexedDB.open('IDBSpesen', 1);
+  var dbobject; // Define a global variable to hold our database object
+  idb.onsuccess = function(evt){
+    dbobject = evt.target.result;
+    alert('idb.onsuccess');
+    dbobject.createObjectStore('spesen',{autoIncrement: true});
+  }
+  idb.onupgradeneeded = function (evt) {
+    dbobject = evt.target.result;
+    // Check our version number
+    if (evt.oldVersion < 1) {
+      dbobject.createObjectStore('spesen',{autoIncrement: true});
+      alert('idb.onupgradeneeded');
+    }
+  }
+  idb.onblocked = function(){
+    alert('idb.onblocked');
+  }
+  idb.onerror = function(){
+    alert('idb.onerror');
   }
 
-  request.onerror = function(event) {
+  try{
+    transaction = dbobject.transaction('spesen', 'readwrite');
   }
-
-  request.onupgradeneeded = function (event) {
-    var db = event.target.result;
-    // Create another object store called "names" with the autoIncrement flag set as true.
-    var objStore = db.createObjectStore("spesen", { autoIncrement : true });
-
-    //add initialer Eintrag:
-    objStore.add(
-      {
-        "formBeschreibung": "Das ist eine Beschreibung",
-        "formBeginndatum":  "value",
-        "formBeginnzeit":   "value",
-        "formEnddatum":     "value",
-        "formEndzeit":      "value",
-        "formBelegdatum":   "value",
-        "formSpesenbetrag": "value",
-        "formPicture":      "value"
-      }
-    );//add
+  catch(err){
+    alert('error create transaktion');
   }
+  // *************************************************************************
+  // INDEXED ENDE
+  // *************************************************************************
+
 
   $scope.insertExpense = function(){
+    transaction = dbobject.transaction('spesen', 'readwrite');
 
-    var data = {
-        "formBeschreibung": $scope.formBeschreibung,
-        "formBeginndatum":  $scope.formBeginndatum,
-        "formBeginnzeit":   $scope.formBeginnzeit,
-        "formEnddatum":     $scope.formEnddatum,
-        "formEndzeit":      $scope.formEndzeit,
-        "formBelegdatum":   $scope.formBelegdatum,
-        "formSpesenbetrag": $scope.formSpesenbetrag,
-        "formPicture":      $scope.formPciture
-      }
+    request = objectstore.add({
+      "formBeschreibung": $scope.formBeschreibung,
+      "formBeginndatum":  $scope.formBeginndatum,
+      "formBeginnzeit":   $scope.formBeginnzeit,
+      "formEnddatum":     $scope.formEnddatum,
+      "formEndzeit":      $scope.formEndzeit,
+      "formBelegdatum":   $scope.formBelegdatum,
+      "formSpesenbetrag": $scope.formSpesenbetrag,
+      "formPicture":      $scope.formPciture
+
+    });
+    request.success = function(){
+      alert('eintrag added');
+    }
   }
-
 
 
 
