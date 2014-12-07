@@ -11,48 +11,42 @@ angular.module('starter.controllers', [])
   // *************************************************************************
   // INDEXED DB Start
   // *************************************************************************
-  var idbSupported = false;
-  var db;
+  window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
+  window.msIndexedDB;
+  window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
+  window.msIDBTransaction;
+  window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+  if (!window.indexedDB) {
+    alert("Sorry!Your browser doesn't support IndexedDB");
+  }
 
-  //document.addEventListener("DOMContentLoaded", function(){
+  var database;
+  var request = window.indexedDB.open("notepad",1);
+  request.onerror = function(event) {
+    console.log(event.target.errorCode);
+  };
+  request.onsuccess = function(event) {
+    database=request.result;
+  };
+  request.onupgradeneeded = function(event) {
+    var db = event.target.result;
+    var objectStore = db.createObjectStore("notes", { keyPath:  "id",autoIncrement:true});
+  };
 
-    if("indexedDB" in window) {
-      idbSupported = true;
-    }
-    if(idbSupported) {
-      var openRequest = indexedDB.open("idb",3); //open idb
-      openRequest.onupgradeneeded = function(e) {
-        console.log("running onupgradeneeded");
-        var thisDB = e.target.result;
-        if(!thisDB.objectStoreNames.contains("objectStore")) {
-          thisDB.createObjectStore("objectStore", {autoIncrement:true});
-        }
-      }
-      openRequest.onsuccess = function(e) {
-        console.log("Success!");
-        db = e.target.result;
-      }
-      openRequest.onerror = function(e) {
-        console.log("Error");
-        console.dir(e);
-      }
-    }
   // *************************************************************************
   // INDEXED ENDE
   // *************************************************************************
 
 
   $scope.insertExpense = function(){
-    var transaction = db.transaction("objectStore","readwrite");
-    var store = transaction.objectStore("objectStore");
 
-    //Perform the add
-    var person = {
-      name:name,
-      email:email,
-      created:new Date()
-    }
-    var request = store.add(person,1);
+  var note={title:"Test Note", body:"Hello World!", date:"01/04/2013"};
+    var transaction = database.transaction(["notes"], "readwrite");
+    var objectStore = transaction.objectStore("notes");
+    var request=objectStore.put(note);
+    request.onsuccess = function(event) {
+      //do something here
+    };
 
     var a = {
       "formBeschreibung": $scope.formBeschreibung,
