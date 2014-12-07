@@ -18,7 +18,7 @@ angular.module('starter.controllers', [])
   window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
   if (!window.indexedDB) {
     alert("Sorry!Your browser doesn't support IndexedDB");
-  }
+  }else{
 
   var database;
   var request = window.indexedDB.open("notepad",1);
@@ -33,12 +33,15 @@ angular.module('starter.controllers', [])
     var objectStore = db.createObjectStore("notes", { keyPath:  "id",autoIncrement:true});
   };
 
+}
+
   // *************************************************************************
   // INDEXED ENDE
   // *************************************************************************
 
 
   $scope.insertExpense = function(){
+    if (window.indexedDB) {
 
   var note={title:"Test Note", body:"Hello World!", date:"01/04/2013"};
     var transaction = database.transaction(["notes"], "readwrite");
@@ -59,7 +62,7 @@ angular.module('starter.controllers', [])
       "formPicture":      $scope.formPciture
 
     };
-
+  }
   }
 
 
