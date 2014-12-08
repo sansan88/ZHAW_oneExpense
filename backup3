@@ -2,6 +2,7 @@ angular.module('starter.controllers', [])
 
 // SCOPE defines DATA which should be available on the view.
 
+
 /*****************************************************************/
 // SPESEN CONTROLLER
 /*****************************************************************/
@@ -19,31 +20,34 @@ angular.module('starter.controllers', [])
     alert("Sorry!Your browser doesn't support IndexedDB");
   }else{
 
-    var database;
-    var request = window.indexedDB.open("idb",1);
-    request.onerror = function(event) {
-      console.log(event.target.errorCode);
-    };
-    request.onsuccess = function(event) {
-      database=request.result;
-    };
-    request.onupgradeneeded = function(event) {
-      var db = event.target.result;
-      var objectStore = db.createObjectStore("spesen", { keyPath:  "id",autoIncrement:true});
-    };
+  var database;
+  var request = window.indexedDB.open("indexeddb",1);
+  request.onerror = function(event) {
+    console.log(event.target.errorCode);
+  };
+  request.onsuccess = function(event) {
+    database=request.result;
+  };
+  request.onupgradeneeded = function(event) {
+    var db = event.target.result;
+    var objectStore = db.createObjectStore("spesen", { keyPath:  "id",autoIncrement:true});
+  };
 
-  }
+}
 
   // *************************************************************************
   // INDEXED ENDE
   // *************************************************************************
+
+
   $scope.insertExpense = function(){
     if (window.indexedDB) {
 
-      //var note={title:"Test Note", body:"Hello World!", date:"01/04/2013"};
-      var transaction = database.transaction(["spesen"], "readwrite");
-      var objectStore = transaction.objectStore("spesen");
-      var request=objectStore.put({
+    //var note={title:"Test Note", body:"Hello World!", date:"01/04/2013"};
+    var transaction = database.transaction(["spesen"], "readwrite");
+    var objectStore = transaction.objectStore("spesen");
+    var request=objectStore.put(
+      {
         "formBeschreibung": $scope.formBeschreibung,
         "formBeginndatum":  $scope.formBeginndatum,
         "formBeginnzeit":   $scope.formBeginnzeit,
@@ -52,19 +56,14 @@ angular.module('starter.controllers', [])
         "formBelegdatum":   $scope.formBelegdatum,
         "formSpesenbetrag": $scope.formSpesenbetrag,
         "formPicture":      $scope.formPciture
-
-      });
-      request.onsuccess = function(event) {
-        //do something here
-        console.log("entry added");
-        //Clear $scope..
-
-      };
-    }
+      }
+    );
+    request.onsuccess = function(event) {
+      //do something here
+      console.log("value added");
+    };
   }
-
-
-
+  }
 
   // MODAL FENSTER
   $ionicModal.fromTemplateUrl('./sites/modal-spesen.html', {
@@ -74,9 +73,22 @@ angular.module('starter.controllers', [])
     backdropClickToClose: false
   }).then(function(modal) {
     $scope.modal = modal;
+
+    // INIT Model VARIABLES
+    var now = new Date();
+    var string = "";
+    $scope.formBeginndatum  = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
+    $scope.formEnddatum     = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
+
+    $scope.formBeginnzeit   = '08:00:00';
+    $scope.formEndzeit      = '18:00:00';
+
+    $scope.formBelegdatum  = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
+
   });
   $scope.openModal = function() {
-    $scope.modal.show();
+    $scope.modal.show(function(){
+    });
   };
   $scope.closeModal = function() {
     $scope.modal.hide();
@@ -95,16 +107,7 @@ angular.module('starter.controllers', [])
   });
 
 
-  // INIT Model VARIABLES
-  var now = new Date();
-  var string = "";
-  $scope.formBeginndatum  = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
-  $scope.formEnddatum     = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
 
-  $scope.formBeginnzeit   = '08:00:00';
-  $scope.formEndzeit      = '18:00:00';
-
-  $scope.formBelegdatum  = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
 
 })
 /*****************************************************************/
@@ -120,41 +123,46 @@ angular.module('starter.controllers', [])
 .controller('DashCtrl', function($scope, Account) {
   $scope.account = Account.getAccount();
 
+
+
+
+
+
 })
 
 /*****************************************************************/
 // ACCOUNT CONTROLLER
 /*****************************************************************/
 .controller('AccountCtrl', function($scope, Account) {
-  //GET Account DATA
+//GET Account DATA
   $scope.account = Account.getAccount();
 
-  //SAVE
+//SAVE
   $scope.accountSave = function(){
 
-    function saveStatusLocally(key, value) {
-      window.localStorage.setItem(key, value);
-    };
+      function saveStatusLocally(key, value) {
+        window.localStorage.setItem(key, value);
+      };
 
-    if ($scope.account.formAccountVorname !== undefined){
-      saveStatusLocally('accountVorname',   $scope.account.formAccountVorname );
-    }
+      if ($scope.account.formAccountVorname !== undefined){
+        saveStatusLocally('accountVorname',   $scope.account.formAccountVorname );
+      }
 
-    if ($scope.account.formAccountNachname !== undefined){
-      saveStatusLocally('accountNachname',  $scope.account.formAccountNachname );
-    }
+      if ($scope.account.formAccountNachname !== undefined){
+        saveStatusLocally('accountNachname',  $scope.account.formAccountNachname );
+      }
 
-    if ($scope.account.formAccountEmail !== undefined){
-      saveStatusLocally('accountEmail',     $scope.account.formAccountEmail);
-    }
+      if ($scope.account.formAccountEmail !== undefined){
+        saveStatusLocally('accountEmail',     $scope.account.formAccountEmail);
+      }
 
-    if ($scope.account.formAccountPasswort !== undefined){
-      saveStatusLocally('accountPasswort',  $scope.account.formAccountPasswort);
-    }
+      if ($scope.account.formAccountPasswort !== undefined){
+        saveStatusLocally('accountPasswort',  $scope.account.formAccountPasswort);
+      }
 
   },
 
-  //CANCEL
+//CANCEL
   $scope.accountCancel = function(event){
     alert("cancel");
 
