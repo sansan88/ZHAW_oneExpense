@@ -6,12 +6,11 @@
   </ion-nav-buttons>
 
   <ion-content>
-    <p>Anzahl Spesenbelege: {{expenses.length}}</p>
     <ion-list class="list">
+    <!--<p>Anzahl Spesenbelege: {{expenses.length}}</p>-->
       <ion-item class="item item-icon-right" ng-repeat="spesen in expenses" type="item-text-wrap" href="#/tab/spesen/{{spesen.key}}">
-        {{spesen.key}} | {{spesen.beschreibung}} | Datum: {{spesen.beginndatum}}
         <i class="icon ion-briefcase"></i>
-        <!-- icon card -->
+        {{spesen.key}} | {{spesen.beschreibung}} | Datum: {{spesen.beginndatum}}
       </ion-item>
     </ion-list>
   </ion-content>

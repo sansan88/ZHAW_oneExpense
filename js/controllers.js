@@ -25,45 +25,61 @@ angular.module('starter.controllers', [])
       console.log(event.target.errorCode);
     };
     request.onsuccess = function(event) {
-      database=request.result;
+      database = request.result;
+      $scope.idb = database;
+      $scope.expenses = [];
+      var objectStore = database.transaction("spesen").objectStore("spesen");
+      objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+          //alert("Note id: "+cursor.key+", Title: "+cursor.value.formBeschreibung);
+          $scope.expenses.push(cursor.value);
+          cursor.continue();
+        }
+      };
+
     };
     request.onupgradeneeded = function(event) {
       var db = event.target.result;
-      var objectStore = db.createObjectStore("spesen", { keyPath:  "id",autoIncrement:true});
+      $scope.idb = db;
+      var objectStore = db.createObjectStore("spesen", { keyPath:  "key",autoIncrement:true});
     };
 
   }
-
   // *************************************************************************
   // INDEXED ENDE
   // *************************************************************************
   $scope.insertExpense = function(){
-    if (window.indexedDB) {
+    var spesenbeleg = {
+      "formBeschreibung": $scope.modal.formBeschreibung,
+      "formBeginndatum":  $scope.modal.formBeginndatum,
+      "formBeginnzeit":   $scope.modal.formBeginnzeit,
+      "formEnddatum":     $scope.modal.formEnddatum,
+      "formEndzeit":      $scope.modal.formEndzeit,
+      "formBelegdatum":   $scope.modal.formBelegdatum,
+      "formSpesenbetrag": $scope.modal.formSpesenbetrag,
+      "formWaehrung":     $scope.modal.formWaehrung,
+      "formPicture":      $scope.modal.formPicture
+    };
+        if (window.indexedDB) {
 
       //var note={title:"Test Note", body:"Hello World!", date:"01/04/2013"};
       var transaction = database.transaction(["spesen"], "readwrite");
       var objectStore = transaction.objectStore("spesen");
-      var request=objectStore.put({
-        "formBeschreibung": $scope.formBeschreibung,
-        "formBeginndatum":  $scope.formBeginndatum,
-        "formBeginnzeit":   $scope.formBeginnzeit,
-        "formEnddatum":     $scope.formEnddatum,
-        "formEndzeit":      $scope.formEndzeit,
-        "formBelegdatum":   $scope.formBelegdatum,
-        "formSpesenbetrag": $scope.formSpesenbetrag,
-        "formPicture":      $scope.formPciture
-
-      });
+      var request=objectStore.put(spesenbeleg);
       request.onsuccess = function(event) {
         //do something here
         console.log("entry added");
         //Clear $scope..
 
       };
-    }
-  }
-
-
+    }else{
+      var string = "";
+      var now = new Date();
+      var key = string.concat( now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate()  + '_' + now.getHours() + '_' + now.getMinutes() + '_' + now.getSeconds() );
+      window.localStorage.setItem(key, spesenbeleg);
+    }//ende if
+  }//ende insert
 
 
   // MODAL FENSTER
@@ -75,8 +91,20 @@ angular.module('starter.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
+
   $scope.openModal = function() {
     $scope.modal.show();
+    // INIT Model VARIABLES
+    var now = new Date();
+    var string = "";
+    $scope.modal.formBeginndatum  = string.concat( now.getFullYear() + '-' + ("0" + (now.getMonth() + 1)).slice(-2) + '-' + ("0" + now.getDate()).slice(-2) );
+    $scope.modal.formEnddatum     = string.concat( now.getFullYear() + '-' + ("0" + (now.getMonth() + 1)).slice(-2) + '-' + ("0" + now.getDate()).slice(-2) );
+
+    $scope.modal.formBeginnzeit   = '08:00:00';
+    $scope.modal.formEndzeit      = '18:00:00';
+
+    $scope.modal.formBelegdatum  = string.concat( now.getFullYear() + '-' + ("0" + (now.getMonth() + 1)).slice(-2) + '-' + ("0" + now.getDate()).slice(-2) );
+
   };
   $scope.closeModal = function() {
     $scope.modal.hide();
@@ -88,29 +116,33 @@ angular.module('starter.controllers', [])
   // Execute action on hide modal
   $scope.$on('modal.hidden', function() {
     // Execute action
+    $scope.modal.formBeschreibung = null;
+    $scope.modal.formBeginndatum  = null;
+    $scope.modal.formBeginnzeit   = null;
+    $scope.modal.formEnddatum     = null;
+    $scope.modal.formEndzeit      = null;
+    $scope.modal.formBelegdatum   = null;
+    $scope.modal.formSpesenbetrag = null;
+    $scope.modal.formWaehrung     = null;
+    $scope.modal.formPicture      = null;
   });
   // Execute action on remove modal
   $scope.$on('modal.removed', function() {
     // Execute action
+
   });
-
-
-  // INIT Model VARIABLES
-  var now = new Date();
-  var string = "";
-  $scope.formBeginndatum  = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
-  $scope.formEnddatum     = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
-
-  $scope.formBeginnzeit   = '08:00:00';
-  $scope.formEndzeit      = '18:00:00';
-
-  $scope.formBelegdatum  = string.concat( now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate() );
 
 })
 /*****************************************************************/
 // SPESEN DETAIL CONTROLLER
 /*****************************************************************/
 .controller('SpesenDetailCtrl', function($scope, $stateParams) {
+  var objectStore = $scope.idb.transaction("spesen").objectStore("spesen");
+  objectStore.get(17).done(function(value) {
+    console.log(value);
+    //$scope.beschreibung = value.formBeschreibung; Number($stateParams.spesenId)
+  });
+
 
 
 })
