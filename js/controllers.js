@@ -61,7 +61,7 @@ angular.module('starter.controllers', [])
       "formWaehrung":     $scope.modal.formWaehrung,
       "formPicture":      $scope.modal.formPicture
     };
-        if (window.indexedDB) {
+    if (window.indexedDB) {
 
       //var note={title:"Test Note", body:"Hello World!", date:"01/04/2013"};
       var transaction = database.transaction(["spesen"], "readwrite");
@@ -77,7 +77,7 @@ angular.module('starter.controllers', [])
       var string = "";
       var now = new Date();
       var key = string.concat( now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate()  + '_' + now.getHours() + '_' + now.getMinutes() + '_' + now.getSeconds() );
-      window.localStorage.setItem(key, spesenbeleg);
+      window.localStorage.setItem(key, spesenbeleg.toString());
     }//ende if
   }//ende insert
 
@@ -138,12 +138,9 @@ angular.module('starter.controllers', [])
 /*****************************************************************/
 .controller('SpesenDetailCtrl', function($scope, $stateParams) {
   var objectStore = $scope.idb.transaction("spesen").objectStore("spesen");
-  objectStore.get(17).done(function(value) {
-    console.log(value);
-    //$scope.beschreibung = value.formBeschreibung; Number($stateParams.spesenId)
-  });
-
-
+  objectStore.get(Number($stateParams.spesenId)).onsuccess = function(event) {
+    $scope.spesen = event.target.result;
+  };
 
 })
 /*****************************************************************/

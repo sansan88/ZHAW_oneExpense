@@ -10,7 +10,7 @@
     <!--<p>Anzahl Spesenbelege: {{expenses.length}}</p>-->
       <ion-item class="item item-icon-right" ng-repeat="spesen in expenses" type="item-text-wrap" href="#/tab/spesen/{{spesen.key}}">
         <i class="icon ion-briefcase"></i>
-        {{spesen.key}} | {{spesen.beschreibung}} | Datum: {{spesen.beginndatum}}
+        {{spesen.key}} | {{spesen.formBeschreibung}} | Datum: {{spesen.formBeginndatum}}
       </ion-item>
     </ion-list>
   </ion-content>
