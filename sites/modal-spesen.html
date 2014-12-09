@@ -11,18 +11,18 @@
               <div class="input-label">
                 Kategorie
               </div>
-              <select>
+              <select ng-model="modal.formKategorie">
                 <option selected>Geschäftsreise</option>
                 <option>Andere Spesen</option>
               </select>
             </label>
             <label class="item item-input">  <!-- Beschreibung -->
-              <input type="text" placeholder="Beschreibung" ng-model="modal.formBeschreibung" ng-model-instant>
+              <input type="text" placeholder="Beschreibung" ng-model="modal.formBeschreibung" ng-model-instant required>
             </label>
-            <label class="item item-input"><!-- Spesenbetrag -->
-              <input type="number" placeholder="Spesenbetrag" ng-model="modal.formSpesenbetrag" ng-model-instant>
+            <label class="item item-input" requires><!-- Spesenbetrag -->
+              <input type="number" placeholder="Spesenbetrag" ng-model="modal.formSpesenbetrag" ng-model-instant required>
             </label>
-            <label class="item item-input item-select"><!-- Währung -->
+            <label class="item item-input item-select" required><!-- Währung -->
               <div class="input-label">
                 Währung
               </div>
@@ -62,17 +62,19 @@
               <input type="time" placeholder="Endzeit" ng-model="modal.formEndzeit" ng-model-instant>
             </label>
           </div>
+          <button class="button button-block button-balanced" ng-click="insertExpense()">
+            erfassen
+          </button>
+
+          <button class="button button-block button-assertive" ng-click="closeModal()">
+            abbrechen
+          </button>
+
     <!--    </ion-tab>
     </ion-tabs>-->
     </form>
   </ion-content>
-  <ion-footer-bar>
-    <button class="button button-balanced" ng-click="insertExpense()">
-      erfassen
-    </button>
+<!--  <ion-footer-bar>
 
-    <button class="button button-assertive" ng-click="closeModal()">
-      abbrechen
-    </button>
-  </ion-footer-bar>
+</ion-footer-bar>-->
 </ion-modal-view>

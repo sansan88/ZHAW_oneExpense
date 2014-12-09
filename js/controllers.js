@@ -52,6 +52,7 @@ angular.module('starter.controllers', [])
   $scope.insertExpense = function(){
 
     var spesenbeleg = {
+      "formKategorie": $scope.modal.formKategorie,
       "formBeschreibung": $scope.modal.formBeschreibung,
       "formBeginndatum":  $scope.modal.formBeginndatum,
       "formBeginnzeit":   $scope.modal.formBeginnzeit,
@@ -81,6 +82,8 @@ angular.module('starter.controllers', [])
       var key = string.concat( now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate()  + '_' + now.getHours() + '_' + now.getMinutes() + '_' + now.getSeconds() );
       window.localStorage.setItem(key, spesenbeleg.toString());
     }//ende if
+
+    $scope.modal.hide();
 
   }//ende insert
 
@@ -141,6 +144,7 @@ angular.module('starter.controllers', [])
     // Execute action
 
     //init fields
+    $scope.modal.formKategorie    = null;
     $scope.modal.formBeschreibung = null;
     $scope.modal.formBeginndatum  = null;
     $scope.modal.formBeginnzeit   = null;
