@@ -3,76 +3,68 @@
     <h1 class="title">Spesenbeleg erfassen</h1>
   </ion-header-bar>
   <ion-content>
-
     <form>
-      <div class="list">
-
-        <!-- Speseninfos -->
-        <!-- kategorie-->
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Kategorie
+      <!--<ion-tabs class="tabs-positive tabs-icon-only">
+        <ion-tab title="Allgemein" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline">
+        -->  <div class="list">
+            <label class="item item-input item-select"> <!-- kategorie-->
+              <div class="input-label">
+                Kategorie
+              </div>
+              <select>
+                <option selected>Geschäftsreise</option>
+                <option>Andere Spesen</option>
+              </select>
+            </label>
+            <label class="item item-input">  <!-- Beschreibung -->
+              <input type="text" placeholder="Beschreibung" ng-model="modal.formBeschreibung" ng-model-instant>
+            </label>
+            <label class="item item-input"><!-- Spesenbetrag -->
+              <input type="number" placeholder="Spesenbetrag" ng-model="modal.formSpesenbetrag" ng-model-instant>
+            </label>
+            <label class="item item-input item-select"><!-- Währung -->
+              <div class="input-label">
+                Währung
+              </div>
+              <select ng-model="modal.formWaehrung">
+                <option selected>CHF</option>
+                <option>EUR</option>
+              </select>
+            </label>
           </div>
-          <select>
-            <option selected>Geschäftsreise</option>
-            <option>Andere Spesen</option>
-          </select>
-        </label>
+        <!--</ion-tab>-->
 
-        <!-- Beschreibung -->
-        <label class="item item-input">
-          <input type="text" placeholder="Beschreibung" ng-model="modal.formBeschreibung" ng-model-instant>
-        </label>
-
-      </div>
-      <div class="list">
-        <!-- Beginndatum -->
-        <label class="item item-input">
-          <input type="date" placeholder="Beginndatum" ng-model="modal.formBeginndatum" ng-model-instant>
-        </label>
-        <label class="item item-input">
-          <input type="time" placeholder="Beginnzeit" ng-model="modal.formBeginnzeit" ng-model-instant>
-        </label>
-
-        <!-- Enddatum -->
-        <label class="item item-input">
-          <input type="date" placeholder="Enddatum" ng-model="modal.formEnddatum" ng-model-instant>
-        </label>
-        <label class="item item-input">
-          <input type="time" placeholder="Endzeit" ng-model="modal.formEndzeit" ng-model-instant>
-        </label>
-      </div>
-      <!-- Beleg -->
-      <div class="list">
-        <!-- Belegdatum -->
-        <label class="item item-input">
-          <input type="date" placeholder="Belegdatum" ng-model="modal.formBelegdatum" ng-model-instant>
-        </label>
-
-        <!-- Spesenbetrag -->
-        <label class="item item-input">
-          <input type="number" placeholder="Spesenbetrag" ng-model="modal.formSpesenbetrag" ng-model-instant>
-        </label>
-
-        <!-- Währung -->
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Währung
+        <!--<ion-tab title="Anhänge" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline">
+        --><div class="list">
+            <label class="item item-input"><!-- Belegdatum -->
+              <input type="date" placeholder="Belegdatum" ng-model="modal.formBelegdatum" ng-model-instant>
+            </label>
+            <label class="item item-input"><!-- File Upload -->
+              <input type="file" id="take-picture" accept="image/*" ng-model="modal.formPicture" ng-model-instant>
+            </label>
           </div>
-          <select ng-model="modal.formWaehrung">
-            <option selected>CHF</option>
-            <option>EUR</option>
-          </select>
-        </label>
+        <!--</ion-tab>-->
 
-        <!-- File Upload -->
-        <label class="item item-input">
-          <input type="file" id="take-picture" accept="image/*" ng-model="modal.formPicture">
-        </label>
-      </div>
+        <!--<ion-tab title="Weiteres" icon-on="ion-ios7-gear" icon-off="ion-ios7-gear-outline">
+        --><div class="list">
 
+            <label class="item item-input"><!-- Beginndatum -->
+              <input type="date" placeholder="Beginndatum" ng-model="modal.formBeginndatum" ng-model-instant>
+            </label>
+            <label class="item item-input">
+              <input type="time" placeholder="Beginnzeit" ng-model="modal.formBeginnzeit" ng-model-instant>
+            </label>
+
+            <label class="item item-input"><!-- Enddatum -->
+              <input type="date" placeholder="Enddatum" ng-model="modal.formEnddatum" ng-model-instant>
+            </label>
+            <label class="item item-input">
+              <input type="time" placeholder="Endzeit" ng-model="modal.formEndzeit" ng-model-instant>
+            </label>
+          </div>
+    <!--    </ion-tab>
+    </ion-tabs>-->
     </form>
-
   </ion-content>
   <ion-footer-bar>
     <button class="button button-balanced" ng-click="insertExpense()">

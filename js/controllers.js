@@ -50,6 +50,7 @@ angular.module('starter.controllers', [])
   // INDEXED ENDE
   // *************************************************************************
   $scope.insertExpense = function(){
+
     var spesenbeleg = {
       "formBeschreibung": $scope.modal.formBeschreibung,
       "formBeginndatum":  $scope.modal.formBeginndatum,
@@ -59,7 +60,8 @@ angular.module('starter.controllers', [])
       "formBelegdatum":   $scope.modal.formBelegdatum,
       "formSpesenbetrag": $scope.modal.formSpesenbetrag,
       "formWaehrung":     $scope.modal.formWaehrung,
-      "formPicture":      $scope.modal.formPicture
+      "formPicture":      $scope.modal.formPicture,
+      "formPictureURL":   $scope.modal.formPictureURL
     };
     if (window.indexedDB) {
 
@@ -79,6 +81,7 @@ angular.module('starter.controllers', [])
       var key = string.concat( now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate()  + '_' + now.getHours() + '_' + now.getMinutes() + '_' + now.getSeconds() );
       window.localStorage.setItem(key, spesenbeleg.toString());
     }//ende if
+
   }//ende insert
 
 
@@ -91,6 +94,8 @@ angular.module('starter.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
+
+
 
   $scope.openModal = function() {
     $scope.modal.show();
@@ -105,6 +110,24 @@ angular.module('starter.controllers', [])
 
     $scope.modal.formBelegdatum  = string.concat( now.getFullYear() + '-' + ("0" + (now.getMonth() + 1)).slice(-2) + '-' + ("0" + now.getDate()).slice(-2) );
 
+
+    //get Picture
+    var takePicture = document.querySelector("#take-picture");
+    takePicture.onchange = function (event) {
+      // Get a reference to the taken picture or chosen file
+      var files = event.target.files,
+      file;
+      if (files && files.length > 0) {
+        file = files[0];
+        $scope.modal.formPicture = window.URL.createObjectURL(file);
+        var URL = window.URL || window.webkitURL;
+        // Create ObjectURL
+        var imgURL = URL.createObjectURL(file);
+        $scope.modal.formPictureURL = imgURL;
+
+      }
+    };
+
   };
   $scope.closeModal = function() {
     $scope.modal.hide();
@@ -116,6 +139,8 @@ angular.module('starter.controllers', [])
   // Execute action on hide modal
   $scope.$on('modal.hidden', function() {
     // Execute action
+
+    //init fields
     $scope.modal.formBeschreibung = null;
     $scope.modal.formBeginndatum  = null;
     $scope.modal.formBeginnzeit   = null;
@@ -125,6 +150,7 @@ angular.module('starter.controllers', [])
     $scope.modal.formSpesenbetrag = null;
     $scope.modal.formWaehrung     = null;
     $scope.modal.formPicture      = null;
+    $scope.modal.formPictureURL   = null;
   });
   // Execute action on remove modal
   $scope.$on('modal.removed', function() {
