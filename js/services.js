@@ -48,6 +48,7 @@ angular.module('starter.services', [])
 
       getSpese: function(id){
         var spese = {}
+
         var objectStore = database.transaction("spesen").objectStore("spesen");
         objectStore.get(Number(id)).onsuccess = function(event) {
           spese = event.target.result;
