@@ -84,5 +84,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $urlRouterProvider.otherwise('/tab/dash');
 
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
-  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|blob):/);
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|blob|http):/);
 });
