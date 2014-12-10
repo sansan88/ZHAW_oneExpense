@@ -7,7 +7,15 @@ angular.module('starter.controllers', [])
 //****************************************************************/
 .controller('SpesenCtrl', function($scope, $ionicModal, Spesen) {
 
-  $scope.expenses = Spesen.getSpesen();
+  console.log('before get.Spesen()');
+
+  setTimeout(function(){
+    $scope.expenses = Spesen.getSpesen();
+  },1);
+
+
+
+  console.log('after get.Spesen()');
 
   $scope.insertExpense = function(){
 
@@ -92,7 +100,8 @@ angular.module('starter.controllers', [])
 // SPESEN DETAIL CONTROLLER
 /*****************************************************************/
 .controller('SpesenDetailCtrl', function($scope, $stateParams, Spesen) {
-  $scope.spesen = Spesen.getSpese(Number($stateParams.spesenId));
+
+    $scope.spesen = Spesen.getSpese(Number($stateParams.spesenId));
 
   if ($scope.spesen.key === undefined){
     $scope.$viewHistory.backView.go().then = function(){
