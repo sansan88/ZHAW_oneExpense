@@ -24,21 +24,6 @@ angular.module('starter.services', [])
       request.onsuccess = function(event) {
         console.log('request.onsuccess');
         database = request.result;
-        //$scope.idb = database;
-        //$scope.expenses = [];
-      /*  spesen = [];
-        var objectStore = database.transaction("spesen").objectStore("spesen");
-        objectStore.openCursor().onsuccess = function(event) {
-          var cursor = event.target.result;
-          if (cursor) {
-
-            spesen.push(cursor.value);
-            //alert("Note id: "+cursor.key+", Title: "+cursor.value.formBeschreibung);
-            //$scope.expenses.push(cursor.value);
-            cursor.continue();
-          }
-        };
-*/
       };
       request.onupgradeneeded = function(event) {
         console.log('request.onupgradeneeded');
