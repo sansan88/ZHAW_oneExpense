@@ -6,12 +6,18 @@
   </ion-nav-buttons>
 
   <ion-content>
-    <ion-list class="list">
+    <ion-list ng-controller="SpesenCtrl" can-swipe=true>
     <!--<p>Anzahl Spesenbelege: {{expenses.length}}</p>-->
-      <ion-item class="item item-icon-right" ng-repeat="spesen in expenses" type="item-text-wrap" href="#/tab/spesen/{{spesen.key}}">
-        <i class="icon ion-briefcase"></i>
-        {{spesen.key}} | {{spesen.formBeschreibung}} | Datum: {{spesen.formBeginndatum}}
+      <ion-item class="item item-thumbnail-left" ng-repeat="spesen in expenses" type="item-text-wrap" href="#/tab/spesen/{{spesen.key}}">
+        <img ng-src="{{spesen.formPictureURL}}">
+        <p>{{spesen.key}}</p>
+        <h2>{{spesen.formBeschreibung}} </h2>
+        <p>Datum: {{spesen.formBeginndatum}}</p>
+        <ion-option-button class="button-positive" ng-click="share(spesen)">Share</ion-option-button>
+        <ion-option-button class="button-energized" ng-click="edit(spesen)">Edit</ion-option-button>
+        <ion-option-button class="button-assertive" ng-click="delete(spesen)">Delete</ion-option-button>
       </ion-item>
     </ion-list>
+
   </ion-content>
 </ion-view>

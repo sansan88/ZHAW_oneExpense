@@ -7,14 +7,16 @@ angular.module('starter.controllers', [])
 //****************************************************************/
 .controller('SpesenCtrl', function($scope, $ionicModal, Spesen) {
 
+  $scope.edit = function(spesen) {
+    alert('Edit Item: ' + spesen.key);
+  };
+  $scope.share = function(spesen) {
+    alert('Share Item: ' + spesen.key);
+  };
+  
+
   console.log('before get.Spesen()');
-
-  setTimeout(function(){
-    $scope.expenses = Spesen.getSpesen();
-  },1);
-
-
-
+  $scope.expenses = Spesen.getSpesen();
   console.log('after get.Spesen()');
 
   $scope.insertExpense = function(){
