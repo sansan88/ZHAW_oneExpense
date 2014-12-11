@@ -5,7 +5,7 @@ angular.module('starter.controllers', [])
 //****************************************************************/
 // SPESEN CONTROLLER
 //****************************************************************/
-.controller('SpesenCtrl', function($scope, $ionicModal, Spesen) {
+.controller('SpesenCtrl', function($scope, $ionicModal, Spesen, $http) {
 
   $scope.idb = {};
 
@@ -106,9 +106,37 @@ angular.module('starter.controllers', [])
   $scope.edit = function(spesen) {
     alert('Edit Item: ' + spesen.key);
   };
-  $scope.share = function(spesen) {
-    alert('Share Item: ' + spesen.key);
-  };
+  $scope.send = function(spesen) {
+    var link = "mailto:" + window.localStorage.getItem("accountEmail")
+    + "?subject=Approve Expense Request " + spesen.key + " from User " + window.localStorage.getItem("accountVorname") + " " + window.localStorage.getItem("accountNachname")
+    + "&body="
+    + "Beschreibung: " + spesen.formBeschreibung + "%0A"
+    + "Belegdatum: " + spesen.formBelegdatum + "%0A"
+    + "Betrag" + spesen.formSpesenbetrag + spesen.formWaehrung + "%0A"
+    + "Kategorie" + spesen.formKategorie + "%0A"
+    + "Beginndatum" + spesen.formBeginndatum + "%0A"
+    + "Beginnzeit" + spesen.formBeginnzeit + "%0A"
+    + "Enddatum" + spesen.formEnddatum + "%0A"
+    + "Endzeit" + spesen.formEndzeit + "%0A"
+    + "attachment=" + '"'+ spesen.formPictureURL + '"';
+
+    window.location.href = link;
+
+      /*  if (window.plugins && window.plugins.emailComposer){
+      window.plugins.emailComposer.showEmailComposerWithCallback(function(result){
+        console.log("email success");
+      },
+        "Approval Expense Request for "+spesen.key, //subject
+        "Please Approve Expense: " + spesen.formBeschreibung, //body
+        ["sandro.scalco@gmail.com"], //[] array mail to
+        null,//[] array mail cc
+        null, //[] array mail bcc
+        false, //use hmtl
+        null, //attachement
+        null //attachement
+      );
+    }//if */
+  };//send
 
 //******************************************************************************
 // Spesen funktionen
