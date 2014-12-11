@@ -6,7 +6,13 @@
   </ion-nav-buttons>
 
   <ion-content>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
     <ion-list ng-controller="SpesenCtrl" can-swipe=true>
+
+
     <!--<p>Anzahl Spesenbelege: {{expenses.length}}</p>-->
       <ion-item class="item item-thumbnail-left" ng-repeat="spesen in expenses" type="item-text-wrap" href="#/tab/spesen/{{spesen.key}}">
         <img ng-src="{{spesen.formPictureURL}}">

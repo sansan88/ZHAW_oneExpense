@@ -155,6 +155,24 @@ angular.module('starter.controllers', [])
 
   }, 100);
 
+  $scope.doRefresh = function() {
+    setTimeout(function(){
+      var spesen = [];
+      var objectStore = $scope.idb.transaction("spesen").objectStore("spesen");
+      objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+          spesen.push(cursor.value);
+          cursor.continue();
+        }
+        $scope.expenses = spesen;
+      };
+
+    }, 100);
+      // Stop the ion-refresher from spinning
+    $scope.$broadcast('scroll.refreshComplete');
+  };
+
 }) // ENDE CTRL
 
 //******************************************************************************
