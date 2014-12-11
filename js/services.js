@@ -5,36 +5,10 @@ angular.module('starter.services', [])
 //****************************************************************/
  .factory('Spesen', function() {
 
-    // INDEXED DB Start
-    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB ||
-    window.msIndexedDB;
-    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction ||
-    window.msIDBTransaction;
-    window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
-
-    database = {};
-    var request = window.indexedDB.open("idb",1);
-    request.onerror = function(event) {
-      console.log(event.target.errorCode);
-    };
-    request.onsuccess = function(event) {
-      console.log('START request.onsuccess');
-      database = request.result;
-      console.log('ENDE request.onsuccess');
-    };
-    request.onupgradeneeded = function(event) {
-      console.log('START request.onupgradeneeded');
-      var db = event.target.result;
-      database = db;
-      //$scope.idb = db;
-      var objectStore = database.createObjectStore("spesen", { keyPath:  "key",autoIncrement:true});
-      console.log('ENDE request.onupgradeneeded');
-    };
-
-    //Public return methods.
+   //Public return methods.
     return {
-      getSpesen: function(){
-        spesen = [];
+      getSpesen: function(database){
+        var spesen = [];
         var objectStore = database.transaction("spesen").objectStore("spesen");
         objectStore.openCursor().onsuccess = function(event) {
           var cursor = event.target.result;
@@ -46,9 +20,8 @@ angular.module('starter.services', [])
         return spesen;
       },
 
-      getSpese: function(id){
+      getSpese: function(database, id){
         var spese = {}
-
         var objectStore = database.transaction("spesen").objectStore("spesen");
         objectStore.get(Number(id)).onsuccess = function(event) {
           spese = event.target.result;
@@ -56,24 +29,18 @@ angular.module('starter.services', [])
         return spese;
       },
 
-      addSpesen: function(spesenobj){
+      addSpesen: function(database, spesenobj){
         var transaction = database.transaction(["spesen"], "readwrite");
         var objectStore = transaction.objectStore("spesen");
         var request=objectStore.put(spesenobj);
         request.onsuccess = function(event) {
           console.log("entry added");
         };
-      },
-      getDb: function(){
-        return database;
-      },
-      getRequest: function(){
-        return request;
       }
+
     } //End return methods
 
  })// END SPESEN Service
-
 
  //****************************************************************/
  // ACCOUNT Service
