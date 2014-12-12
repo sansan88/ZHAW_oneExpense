@@ -215,7 +215,7 @@ angular.module('starter.controllers', [])
       console.log('no spesen returned, navigation back');
     }();
   }*/
-  var spese = {}
+  //var spese = {}
   var objectStore = $scope.idb.transaction("spesen").objectStore("spesen");
   objectStore.get(Number($stateParams.spesenId)).onsuccess = function(event) {
     $scope.spesen = event.target.result;
