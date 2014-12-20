@@ -31,6 +31,19 @@
                 <option>EUR</option>
               </select>
             </label>
+
+            <label class="item item-input">  <!-- Toggle -->
+              Standort verwenden?
+              <label class="toggle">
+                <input type="checkbox" ng-model="modal.formGeo" ng-model-instant ng-click="useGeolocation()">
+                <div class="track">
+                  <div class="handle"></div>
+                </div>
+              </label>
+            </label>
+
+
+
           </div>
         <!--</ion-tab>-->
 

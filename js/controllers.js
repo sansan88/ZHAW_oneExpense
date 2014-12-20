@@ -104,7 +104,10 @@ angular.module('starter.controllers', [])
 //  List functions
 //******************************************************************************
   $scope.edit = function(spesen) {
-    alert('Edit Item: ' + spesen.key);
+    //alert('Edit Item: ' + spesen.key);
+    var link = "#/tab/spesen/" + spesen.key;
+    window.location.href = link;
+
   };
   $scope.send = function(spesen) {
     var link = "mailto:" + window.localStorage.getItem("accountEmail")
@@ -138,9 +141,37 @@ angular.module('starter.controllers', [])
     }//if */
   };//send
 
+  $scope.delete = function(spesen){
+    alert('delete');
+  }
+
+
 //******************************************************************************
 // Spesen funktionen
 //******************************************************************************
+  $scope.useGeolocation = function(){
+
+    if ($scope.modal.formGeo === false || $scope.modal.formGeo === undefined ){
+
+      function success(position) {
+        $scope.modal.formGeoLong = position.coords.latitude;
+        $scope.modal.formGeoLat  = position.coords.longitude;
+      };
+      function error() {
+        console.log("no geo function");
+      };
+
+      if(navigator.geolocation){
+        // timeout at 60000 milliseconds (60 seconds)
+        var options = {timeout:60000};
+        navigator.geolocation.getCurrentPosition(success, error, options);
+        }else{
+          alert("Sorry, browser does not support geolocation!");
+      }
+
+    }
+  };
+
   $scope.insertExpense = function(){
     var spese = {
       "formKategorie":    $scope.modal.formKategorie,
@@ -153,7 +184,9 @@ angular.module('starter.controllers', [])
       "formSpesenbetrag": $scope.modal.formSpesenbetrag,
       "formWaehrung":     $scope.modal.formWaehrung,
       "formPicture":      $scope.modal.formPicture,
-      "formPictureURL":   $scope.modal.formPictureURL
+      "formPictureURL":   $scope.modal.formPictureURL,
+      "formGeoLong":      $scope.modal.formGeoLong,
+      "formGeoLat":       $scope.modal.formGeoLat
     };
 
     //Spesen.addSpesen($scope.idb, spese);
@@ -219,6 +252,15 @@ angular.module('starter.controllers', [])
   var objectStore = $scope.idb.transaction("spesen").objectStore("spesen");
   objectStore.get(Number($stateParams.spesenId)).onsuccess = function(event) {
     $scope.spesen = event.target.result;
+
+    var output = document.getElementById("out");
+    var latitude  = $scope.spesen.formGeoLat;
+    var longitude = $scope.spesen.formGeoLong;
+    output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+    var img = new Image();
+    img.src = "http://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+    output.appendChild(img);
+
   };
 
 
