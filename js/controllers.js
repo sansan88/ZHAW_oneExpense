@@ -154,8 +154,8 @@ angular.module('starter.controllers', [])
     if ($scope.modal.formGeo === false || $scope.modal.formGeo === undefined ){
 
       function success(position) {
-        $scope.modal.formGeoLong = position.coords.latitude;
-        $scope.modal.formGeoLat  = position.coords.longitude;
+        $scope.modal.formGeoLat = position.coords.latitude;
+        $scope.modal.formGeoLong  = position.coords.longitude;
       };
       function error() {
         console.log("no geo function");
