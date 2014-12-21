@@ -142,7 +142,15 @@ angular.module('starter.controllers', [])
   };//send
 
   $scope.delete = function(spesen){
-    alert('delete');
+    alert('delete item: ' + spesen.key);
+
+    var transaction = $scope.idb.transaction(["spesen"], "readwrite");
+    var objectStore = transaction.objectStore("spesen");
+    var request = objectStore.delete(spesen.key);
+    request.onsuccess = function(event) {
+      console.log("entry deleted");
+    };
+
   }
 
 
@@ -256,10 +264,22 @@ angular.module('starter.controllers', [])
     var output = document.getElementById("out");
     var latitude  = $scope.spesen.formGeoLat;
     var longitude = $scope.spesen.formGeoLong;
-    output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
-    var img = new Image();
-    img.src = "http://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
-    output.appendChild(img);
+
+    if (latitude === undefined){
+      output.innerHTML = 'Keine Positionsdaten erfasst.';
+    }else{
+      output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+      var img = new Image();
+      img.src = "http://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+      output.appendChild(img);
+    }
+
+
+    if ($scope.spesen.formKategorie === 'Andere Spesen' ){
+      $scope.bildurl = '/res/logo/a.png';
+    }else{
+      $scope.bildurl = '/res/logo/g.png';
+    }
 
   };
 
