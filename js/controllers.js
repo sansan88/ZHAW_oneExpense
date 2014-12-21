@@ -110,7 +110,7 @@ angular.module('starter.controllers', [])
 
   };
   $scope.send = function(spesen) {
-    var link = "mailto:" + window.localStorage.getItem("accountEmail")
+    var link = "mailto:" + window.localStorage.getItem("accountVEmail")
     + "?subject=Approve Expense Request " + spesen.key + " from User " + window.localStorage.getItem("accountVorname") + " " + window.localStorage.getItem("accountNachname")
     + "&body="
     + "Beschreibung: " + spesen.formBeschreibung + "%0A"
@@ -121,9 +121,14 @@ angular.module('starter.controllers', [])
     + "Beginnzeit" + spesen.formBeginnzeit + "%0A"
     + "Enddatum" + spesen.formEnddatum + "%0A"
     + "Endzeit" + spesen.formEndzeit + "%0A"
-    + "attachment=" + '"'+ spesen.formPictureURL + '"';
+    + "attachment=" + '"'+ spesen.formPictureURL + '"' +  "%0A"
+    + "Positionsdaten" + spesen.formGeoLong + "/" +spesen.formGeoLat;
 
     window.location.href = link;
+
+    var counter = window.localStorage.getItem("sendMailCounter");
+    counter = counter + 1;
+    window.localStorage.setItem("sendMailCounter", counter);
 
       /*  if (window.plugins && window.plugins.emailComposer){
       window.plugins.emailComposer.showEmailComposerWithCallback(function(result){
@@ -227,14 +232,22 @@ angular.module('starter.controllers', [])
   $scope.doRefresh = function() {
     setTimeout(function(){
       var spesen = [];
+      var counter = 0;
+      var now = new Date();
+      var string = "";
       var objectStore = $scope.idb.transaction("spesen").objectStore("spesen");
       objectStore.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
         if (cursor) {
           spesen.push(cursor.value);
           cursor.continue();
+          var heute = string.concat( now.getFullYear() + '-' + ("0" + (now.getMonth() + 1)).slice(-2) + '-' + ("0" + now.getDate()).slice(-2) );
+          if (cursor.value.formBelegdatum === heute){
+            counter = counter + 1;
+          }
         }
         $scope.expenses = spesen;
+        window.localStorage.setItem("createdTodayCounter", counter);
       };
 
     }, 100);
@@ -291,6 +304,11 @@ angular.module('starter.controllers', [])
 /*****************************************************************/
 .controller('DashCtrl', function($scope, Account) {
   $scope.account = Account.getAccount();
+
+  $scope.sendMailCounter = window.localStorage.getItem("sendMailCounter");
+  $scope.createdTodayCounter = window.localStorage.getItem("createdTodayCounter");
+
+
 })
 
 /*****************************************************************/
@@ -320,6 +338,9 @@ angular.module('starter.controllers', [])
 
     if ($scope.account.formAccountPasswort !== undefined){
       saveStatusLocally('accountPasswort',  $scope.account.formAccountPasswort);
+    }
+    if ($scope.account.formAccountVEmail !== undefined){
+      saveStatusLocally('accountVEmail',     $scope.account.formAccountVEmail);
     }
   },
 
