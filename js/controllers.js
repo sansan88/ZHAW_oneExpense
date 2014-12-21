@@ -122,7 +122,7 @@ angular.module('starter.controllers', [])
     + "Enddatum" + spesen.formEnddatum + "%0A"
     + "Endzeit" + spesen.formEndzeit + "%0A"
     + "attachment=" + '"'+ spesen.formPictureURL + '"' +  "%0A"
-    + "Positionsdaten" + spesen.formGeoLong + "/" +spesen.formGeoLat;
+    + "Positionsdaten " + spesen.formGeoLong + "/" +spesen.formGeoLat;
 
     window.location.href = link;
 

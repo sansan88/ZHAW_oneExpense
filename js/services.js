@@ -58,6 +58,7 @@ angular.module('starter.services', [])
         formAccountVorname:  window.localStorage.getItem("accountVorname"),
         formAccountEmail:    window.localStorage.getItem("accountEmail"),
         formAccountPasswort: window.localStorage.getItem("accountPasswort")
+        formAccountVEmail:   window.localStorage.getItem("accountVEmail"),
       };
       return account;
     }
