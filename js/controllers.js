@@ -289,9 +289,9 @@ angular.module('starter.controllers', [])
 
 
     if ($scope.spesen.formKategorie === 'Andere Spesen' ){
-      $scope.bildurl = '/res/logo/a.png';
+      $scope.bildurl = './res/logo/a.png';
     }else{
-      $scope.bildurl = '/res/logo/g.png';
+      $scope.bildurl = './res/logo/g.png';
     }
 
   };
